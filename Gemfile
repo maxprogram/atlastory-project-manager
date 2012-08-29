@@ -30,6 +30,7 @@ group :assets do
   #gem "less-rails-bootstrap", "~> 2.0.13"
   gem 'less-rails'
   gem 'therubyracer'
+  gem 'ejs'
 
   gem 'uglifier', '>= 1.0.3'
 end

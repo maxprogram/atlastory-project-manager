@@ -1,8 +1,4 @@
 
-//@import "bootstrap/bootstrap";
-//@import "mixins";
-//@import "type";
-
 @import "bootstrap/reset.less";
 @import "bootstrap/variables.less";
 @import "bootstrap/mixins.less";
@@ -262,15 +258,40 @@ a:hover {
       .box-shadow(inset 1px 2px 7px rgba(0,0,0,0.25));
     }
   }
+  input {
+    width: 99%;
+    padding: 0 10px;
+    .box-sizing(border-box);
+    font-size: 17px;
+    font-family: @sansFontFamily;
+    outline: none;
+    &::-webkit-input-placeholder {
+      font-style: italic;
+    }
+    &:-moz-placeholder {
+      font-style: italic;
+      color: @grayLight;
+    }
+  }
   .name {
-    display: inline-block;
     float: left;
     width: 40%;
-    padding: 0 10px;
-    line-height: @taskHeight;
     font-size: 17px;
-    .text-overflow;
     text-shadow: 1px 1px 1px @white;
+    display: inline-block;
+    .text-overflow;
+    label {
+      line-height: @taskHeight;
+      padding: 0 10px;    
+    }
+    .edit {
+      display: none;
+      color: @grayDark;
+      line-height: @taskHeight - 2;
+      padding-left: 9px;
+      border: 1px dotted @gray;
+      background-color: @white;
+    }
   }
   .category {
     float: left;
@@ -291,15 +312,23 @@ a:hover {
   }
   li.new {
     margin-bottom: 4px;
-    .name {
-      font-style: italic;
-      color: @grayLight;
+    input {
+      display: block;
+      line-height: @taskHeight;
+      color: @grayDark;
+      text-shadow: 1px 1px 1px @white;
+      border: none;
+      background-color: transparent;
     }
   }
   li.done {
     background-color: transparent;
     border-top: 1px solid fade(@white, 15%);
     border-bottom: 1px solid fade(@grayLight, 40%);
+    .box-shadow(none);
+    .check span {
+      background-color: @grayLight;
+    }
     .name {
       color: @grayLight;
       text-decoration: line-through;

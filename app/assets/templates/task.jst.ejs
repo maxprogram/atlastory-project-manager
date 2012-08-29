@@ -1,0 +1,27 @@
+<div class="check"><span></span></div>
+<div class="name">
+	<label><%= task.name %></label>
+	<input class="edit" value="<%= task.name %>">
+</div>
+<div class="category">Sub-project</div>
+<ul class="tools">
+	<li class="dropdown delete">
+		<a href="#" class="btn" title="Delete"><i class="icon-trash"></i></a>
+	</li>
+	<li class="dropdown date">
+		<a href="#" class="btn dropdown-toggle" data-toggle="dropdown" title="Due date..."><i class="icon-calendar"></i></a>
+	</li>
+	<li class="dropdown">
+		<a href="#" class="btn dropdown-toggle" data-toggle="dropdown" title="Move to..."><i class="icon-arrow-right"></i></a>
+	</li>
+	<li class="dropdown">
+		<a href="#" class="btn dropdown-toggle" data-toggle="dropdown" title="Change status"><i class="icon-status"></i></a>
+	</li>
+	<li class="dropdown">
+		<a href="#" class="btn dropdown-toggle" data-toggle="dropdown" title="Tags"><i class="icon-tag"></i></a>
+		<ul class="dropdown-menu pull-right" role="menu">
+		    <li><a href="#">Item 1</a></li>
+		    <li><a href="#">Item 2</a></li>
+		</ul>
+	</li>
+</ul>
