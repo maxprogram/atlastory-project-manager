@@ -1,0 +1,31 @@
+
+gitignore_global
+
+# Ignore bundler + packages
+############################
+/.bundle
+*.zip
+*.dmg
+*.7z
+*.rar
+*.tar
+*.jar
+*.gz
+
+# Ignore the default SQLite database.
+############################
+/db/*.sqlite3
+*.sql
+*.sqlite
+
+# Ignore all logfiles and tempfiles.
+############################
+*.log
+/tmp
+
+# OS generated files
+############################
+.DS_Store*
+ehthumbs.db
+Thumbs.db
+.project

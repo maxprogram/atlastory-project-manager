@@ -1,0 +1,89 @@
+<% provide(:title, "Todo+") %>
+
+		<div id="header">
+			
+			<div class="inner">
+				Atlastory Project Manager
+				<div class="bottom">
+					<div id="current-project">
+						Today
+					</div>
+					<div id="tabs">
+						<ul>
+							<li class="active"><a href="#">Lists</a></li>
+							<li><a href="#">Calendar</a></li>
+							<li><a href="#">Project Wiki</a></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+			
+		</div>
+		
+		<div class="container">
+			
+			<div class="sidebar">
+				<ul>
+					<li class="active"><a href="#"><i class="icon-star"></i> Today</a></li>
+					<li><a href="#"><i class="icon-briefcase"></i> Projects</a></li>
+					<li class="sub"><a href="#"><i class="icon-folder-open"></i> Sub-project</a></li>
+				</ul>
+			</div>
+			
+			<div class="contents">
+				<div class="inner">
+					<div class="list">
+						<ul>
+							<li class="task new">
+								<div class="check"></div>
+								<div class="name">Add new task...</div>
+								<div class="tools">NEW OPTIONS</div>
+							</li>
+							<div class="list-items">
+								<li class="task">
+									<div class="check"><span></span></div>
+									<div class="name">Getting things done</div>
+									<div class="category">Sub-project</div>
+									<ul class="tools">
+										<li class="dropdown">
+											<a href="#" class="btn" title="Delete"><i class="icon-trash"></i></a>
+										</li>
+										<li class="dropdown">
+											<a href="#" class="btn dropdown-toggle" data-toggle="dropdown" title="Due date..."><i class="icon-calendar"></i></a>
+										</li>
+										<li class="dropdown">
+											<a href="#" class="btn dropdown-toggle" data-toggle="dropdown" title="Move to..."><i class="icon-arrow-right"></i></a>
+										</li>
+										<li class="dropdown">
+											<a href="#" class="btn dropdown-toggle" data-toggle="dropdown" title="Change status"><i class="icon-status"></i></a>
+										</li>
+										<li class="dropdown">
+											<a href="#" class="btn dropdown-toggle" data-toggle="dropdown" title="Tags"><i class="icon-tag"></i></a>
+											<ul class="dropdown-menu pull-right" role="menu">
+											    <li><a href="#">Item 1</a></li>
+											    <li><a href="#">Item 2</a></li>
+											</ul>
+										</li>
+									</ul>
+								</li>
+								<li class="task done">
+									<div class="check"><span></span></div>
+									<div class="name">This is a completed task</div>
+									<div class="category">Sub-project</div>
+									<div class="tools">1+2+3+4</div>
+								</li>
+								<li class="task">
+									<div class="check"><span></span></div>
+									<div class="name">This is a longer task name to test css design function</div>
+									<div class="category">Sub-project</div>
+									<div class="tools">1+2+3+4</div>
+								</li>
+							</div>
+							
+						</ul>
+					</div>
+				</div>
+				
+			</div>
+			
+		</div>

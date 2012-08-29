@@ -1,0 +1,313 @@
+@import "reset.less";
+@import "variables.less";
+@import "mixins.less";
+
+@import "type.less";
+
+@import "sprites.less";
+@import "dropdowns.less";
+@import "buttons.less";
+@import "button-groups.less";
+
+@import "utilities.less";
+
+
+// Colors
+
+@contentBg:       @grayLighter;
+@sidebarBg:       @white;
+@taskBg:		  darken(@white,3%);
+
+// Sizes
+
+@headerHeight:    100px;
+@tabHeight:       40px;
+@sidebarWidth:    250px;
+@toolbarHeight:	  35px;
+@taskHeight:	  45px;
+
+
+// Master z-index
+
+@zIndexHeader:    50;
+@zIndexContents:  0;
+@zIndexSidebar:   100;
+
+
+
+
+// BLANKET FORMATTING
+// **************************
+
+*, html {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: @baseFontFamily;
+  font-size: @baseFontSize;
+  line-height: @baseLineHeight;
+  color: @textColor;
+  background-color: @bodyBackground;
+  overflow: hidden;
+}
+
+a {
+  color: @linkColor;
+  text-decoration: none;
+}
+a:hover {
+  color: @linkColorHover;
+  text-decoration: underline;
+}
+
+
+
+// DIV CONTAINERS
+// **************************
+
+#page {
+  position: relative;
+  width: 100%
+}
+
+#header {
+  width: 100%;
+  height: @headerHeight;
+}
+
+.container {
+  position: relative;
+  width: 100%;
+  background-color: @contentBg;
+}
+
+
+// HEADER
+// **************************
+
+#header .inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  z-index: @zIndexHeader;
+  .box-sizing(border-box);
+  border-bottom: 1px solid @grayLight;
+}
+
+#header .bottom {
+  position: absolute;
+  left: 0; bottom: -1px;
+  width: 100%;
+}
+
+#current-project {
+  width: @sidebarWidth;
+  float: left;
+  line-height: @tabHeight;
+  margin-top: 10px;
+  text-align: center;
+}
+
+
+#tabs {
+  @tab-borders: 1px solid @gray;
+  @unactive:    @grayLighter;
+  float: left;
+  height: @tabHeight;
+  ul {
+    margin-left: 0;
+    list-style: none;
+  }
+  li {
+    float: left;
+    display: list-item;
+    a {
+      display: block;
+      float: left;
+      padding: 0 40px;
+      margin-top: 11px;
+      background-color: darken(@unactive,5%);
+      color: @black;
+      font-weight: bold;
+      line-height: @tabHeight - 1;
+      border: @tab-borders;
+      border-bottom-width: 0px;
+      .border-top-radius(5px);
+      &:hover {
+        text-decoration: none;
+        background-color: @unactive;
+        margin-top: -1px;
+        line-height: @tabHeight + 10;
+      }
+    }
+  }
+  li.active a {
+    background-color: @white;
+    &:hover {background-color: @white}
+  }
+  li + li {
+    margin-left: -1px;
+  }
+}
+
+
+// SIDEBAR
+// **************************
+
+.sidebar {
+  position: absolute;
+  top: 0; left: 0;
+  z-index: @zIndexSidebar;
+  width: @sidebarWidth;
+  height: 100%;
+  background-color: @sidebarBg;
+  overflow: hidden;
+  ul {
+  	margin-left: 0;
+  	list-style: none;
+  }
+  li {
+  	display: list-item;
+  	a {
+  	  display: block;
+  	  color: @black;
+  	  font-size: 15px;
+  	  line-height: 2em;
+  	  padding: 0 10px;
+  	}
+  }
+  li a:hover {
+    text-decoration: none;
+    background-color: @grayLighter;
+    .box-shadow(0 1px 4px rgba(0,0,0,0.4));
+  }
+  li.active a {
+    background-color: @linkColor;
+    color: @white;
+    i {background-image: url("@{iconWhiteSpritePath}")}
+  }
+  li.sub a {
+  	padding-left: 25px;
+  }
+}
+
+
+// CONTENT
+// **************************
+
+.contents {
+  width: 100%;
+  height: 100%;
+  z-index: @zIndexContents;
+  background-color: @contentBg;
+  .inner {
+    padding-left: @sidebarWidth;
+    width: 100%;
+    .box-sizing(border-box);
+  }
+}
+
+@list-shadow:	0 2px 11px rgba(0,0,0,0.4);
+
+.contents .toolbar {
+  @border: 1px solid @grayLight;
+  width: 100%;
+  height: @toolbarHeight;
+  z-index: @zIndexContents;
+  border-bottom: @border;
+  border-left: @border;
+  background-color: @white;
+  line-height: @toolbarHeight;
+  .box-shadow(@list-shadow);
+}
+
+.list {
+  z-index: @zIndexContents + 10;
+  ul {
+  	margin-left: 0;
+  	list-style: none;
+  	
+  }
+  li.task {
+  	//overflow: hidden;
+  	width: 100%;
+  	height: @taskHeight;
+  	background-color: @taskBg;
+  	border-top: 1px solid @white;
+  	border-bottom: 1px solid @grayLight;
+  	.box-shadow(@list-shadow);
+  	&:hover .tools {visibility: visible}
+  }
+  .check {
+  	float: left;
+  	width: @taskHeight;
+  	height: @taskHeight;
+  	cursor: pointer;
+  	border-right: 1px dotted @grayLight;
+  	span {
+  	  display: inline-block;
+  	  width: 16px; height: 16px;
+  	  margin-top: (@taskHeight - 18) / 2;
+  	  margin-left: (@taskHeight - 18) / 2;
+  	  background-color: @yellow;
+  	  border: 1px solid @grayLight;
+  	  .border-radius(3px);
+  	  .box-shadow(inset 1px 2px 7px rgba(0,0,0,0.25));
+  	}
+  }
+  .name {
+  	display: inline-block;
+  	float: left;
+  	width: 40%;
+  	padding: 0 10px;
+  	line-height: @taskHeight;
+  	font-size: 17px;
+  	.text-overflow;
+  	text-shadow: 1px 1px 1px @white;
+  }
+  .category {
+  	float: left;
+  	line-height: @taskHeight;
+  	font-size: 13px;
+  	color: @grayLight;
+  	text-shadow: 1px 1px 1px @white;
+  }
+  .tools {
+  	float: right;
+  	visibility: hidden;
+  	width: 300px;
+  	line-height: @taskHeight;
+  	li.dropdown {
+  	  float: right;
+  	  padding: 3px;
+  	}
+  }
+  li.new {
+    margin-bottom: 4px;
+    .name {
+      font-style: italic;
+      color: @grayLight;
+    }
+  }
+  li.done {
+    background-color: transparent;
+    border-top: 1px solid fade(@white, 15%);
+    border-bottom: 1px solid fade(@grayLight, 40%);
+    .name {
+      color: @grayLight;
+      text-decoration: line-through;
+      text-shadow: none;
+    }
+    .category {text-shadow: none}
+  }
+}
+
+
+
+
+
+
+
+
