@@ -20,12 +20,12 @@ var app = app || {}, models = models || {};
 			name: "",
 			description: "",
 			project_id: 1,
-			status: "waiting_for",
+			status: "next",
 			category: "personal",
 			due_date: "",
 			completed: false,
-			project_order: 100,
-			today_order: 100
+			project_order: 90,
+			today_order: 90
 		},
 		toggle: function(){
 			this.save({completed: !this.get("completed")});
@@ -55,10 +55,12 @@ var app = app || {}, models = models || {};
 			return parseFloat(t.get("today_order"));
 		},
 		initialize: function(){
-			this.on("all", this.render, this);
+			this.on("all", this.sortthis, this);
 			this.fetch();
 		},
-		render: function(){}
+		sortthis: function(){
+			this.sort({silent:true});
+		}
 	});
 
 	// Collection for list of projects
@@ -80,7 +82,8 @@ var app = app || {}, models = models || {};
 		},
 		getName: function(id){
 			var project = this.getProject(id);
-			return project.get("name");
+			var name = (project) ? project.get("name") : "";
+			return name;
 		}
 	});
 

@@ -53,14 +53,12 @@ var app = app || {}, models = models || {};
 		},
 		initialize: function(){
 			_.bindAll(this,"add");
-
-			app.todos.off();
 			app.todos.on("add change reset", this.render, this);
 		},
 		render: function(){
 			var self = this;
 			$listItems.empty();
-			
+			console.log("render");
 			_(app.todos.models).each(function(task,i){
 				var taskView = new TaskView({model: task});
 				$listItems.append(taskView.render().el);
@@ -98,7 +96,8 @@ var app = app || {}, models = models || {};
 			this.model.on("destroy", this.unrender, this);
 		},
 		render: function(){
-			var id = this.model.get("project_id"),
+			var self = this,
+				id = this.model.get("project_id"),
 				projects = models.projects,
 				project = projects.getName(id);
 			
@@ -108,7 +107,9 @@ var app = app || {}, models = models || {};
 				projects: projects.toJSON()
 			}));
 
-			this.$el.toggleClass("done",this.model.get("completed"));	
+			this.$el.toggleClass("done",this.model.get("completed"));
+			if (this.model.get("status")=="waiting_for")
+				this.$el.addClass("waiting-for");
 			this.input = this.$(".edit");
 			return this;
 		},
@@ -139,8 +140,17 @@ var app = app || {}, models = models || {};
 			return false;
 		},
 		statusTo: function(e){
-			var status = $(e.target).attr("href");
-			this.model.save("status",status);
+			var status = $(e.target).attr("href"),
+				order = 100;
+			
+			if (status=="today") order = 0;
+			this.model.save({
+				status: status,
+				today_order: order,
+				project_order: order
+			});
+			console.log(app.todos);
+			//app.todos.trigger("reset");
 			return false;
 		}
 	});
