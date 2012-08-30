@@ -20,7 +20,7 @@ var app = app || {}, models = models || {};
 			name: "",
 			description: "",
 			project_id: 1,
-			status: "today",
+			status: "waiting_for",
 			category: "personal",
 			due_date: "",
 			completed: false,
@@ -77,6 +77,10 @@ var app = app || {}, models = models || {};
 			return this.find(function(project){
 				return project.get("id")==id
 			});
+		},
+		getName: function(id){
+			var project = this.getProject(id);
+			return project.get("name");
 		}
 	});
 
@@ -94,8 +98,9 @@ var app = app || {}, models = models || {};
 		}
 	});
 
-	models.today = new TodayList();
 	models.projects = new ProjectsList();
+	models.today = new TodayList();
+	
 	
 	
 })(jQuery);

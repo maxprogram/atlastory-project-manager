@@ -3,7 +3,7 @@
 	<label><%= task.name %></label>
 	<input class="edit" value="<%= task.name %>">
 </div>
-<div class="category"><%= projectName %></div>
+<div class="category"><%= (task.project_id==1) ? "" : project %></div>
 <ul class="tools">
 	<li class="dropdown delete">
 		<a href="#" class="btn" title="Delete"><i class="icon-trash"></i></a>
@@ -13,15 +13,32 @@
 	</li>
 	<li class="dropdown">
 		<a href="#" class="btn dropdown-toggle" data-toggle="dropdown" title="Move to..."><i class="icon-arrow-right"></i></a>
-	</li>
-	<li class="dropdown">
-		<a href="#" class="btn dropdown-toggle" data-toggle="dropdown" title="Change status"><i class="icon-status"></i></a>
-	</li>
-	<li class="dropdown">
-		<a href="#" class="btn dropdown-toggle" data-toggle="dropdown" title="Tags"><i class="icon-tag"></i></a>
 		<ul class="dropdown-menu pull-right" role="menu">
-		    <li><a href="#">Item 1</a></li>
-		    <li><a href="#">Item 2</a></li>
+		    <% _.each(projects,function(proj){ %>
+		    	<li<% if(task.project_id==proj.id){ %> class="active"<% } %>>
+		    		<a href="<%= proj.id  %>" class="move"><%= proj.name  %></a>
+		    	</li>
+		    <% }); %>
 		</ul>
 	</li>
+	<li class="dropdown">
+		<a href="#" class="btn dropdown-toggle" data-toggle="dropdown" title="Change status"><i class="icon-time"></i></a>
+		<ul class="dropdown-menu pull-right" role="menu">
+		    <li<% if(task.status=="today"){ %> class="active"<% } %>>
+		    	<a href="today" class="status">Today</a></li>
+		    <li<% if(task.status=="waiting_for"){ %> class="active"<% } %>>
+		    	<a href="waiting_for" class="status">Waiting for</a></li>
+		    <% if(task.project_id!=1){ %>
+		    <li<% if(task.status=="next"){ %> class="active"<% } %>>
+		    	<a href="next" class="status">Next</a></li>
+		    <% } %>
+		</ul>
+	</li>
+	<!--<li class="dropdown">
+		<a href="#" class="btn dropdown-toggle" data-toggle="dropdown" title="Tags"><i class="icon-tags"></i></a>
+		<ul class="dropdown-menu pull-right" role="menu">
+		    <li><a href="#">Tag 1</a></li>
+		    <li><a href="#">Tag 2</a></li>
+		</ul>
+	</li>-->
 </ul>

@@ -89,7 +89,9 @@ var app = app || {}, models = models || {};
 			"click .check"	: "done",
 			"keypress .edit": "updateName",
 			"dblclick .name": "edit",
-			"click .delete"	: "remove"
+			"click .delete"	: "remove",
+			"click .move"	: "moveTo",
+			"click .status"	: "statusTo"
 		},
 		initialize: function(){
 			this.model.on("change", this.render, this);
@@ -98,12 +100,11 @@ var app = app || {}, models = models || {};
 		render: function(){
 			var id = this.model.get("project_id"),
 				projects = models.projects,
-				project = projects.getProject(id),
-				projectName = (project.get("name")=="Today") ? "":project.get("name");
-
+				project = projects.getName(id);
+			
 			this.$el.html(this.template({
 				task: this.model.toJSON(),
-				projectName: projectName,
+				project: project,
 				projects: projects.toJSON()
 			}));
 
@@ -131,6 +132,16 @@ var app = app || {}, models = models || {};
 		},
 		unrender: function(){
 			this.$el.remove();
+		},
+		moveTo: function(e){
+			var project = $(e.target).attr("href");
+			this.model.save("project_id",project);
+			return false;
+		},
+		statusTo: function(e){
+			var status = $(e.target).attr("href");
+			this.model.save("status",status);
+			return false;
 		}
 	});
 	
