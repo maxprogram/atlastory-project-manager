@@ -53,15 +53,35 @@ var app = app || {}, models = models || {};
 		},
 		initialize: function(){
 			_.bindAll(this,"add");
+			
+			$listItems.sortable({
+				constraint: 'y',
+				//xbounds: [0,1000],
+				ybounds: [0,5000],
+				placeholderClass: 'task done'
+			});
+			
 			app.todos.on("add change reset", this.render, this);
+			app.todos.on("change:order", this.orderChange, this);
 		},
 		render: function(){
 			var self = this;
+			this.views = [];
 			$listItems.empty();
-			console.log("render");
+			
 			_(app.todos.models).each(function(task,i){
 				var taskView = new TaskView({model: task});
 				$listItems.append(taskView.render().el);
+				$listItems.sortableUpdate({
+					onStop: function(){task.trigger("change:order");}
+				});
+				self.views.push(taskView);
+			});
+		},
+		orderChange: function(){
+			_(this.views).each(function(view,i){
+				var index = $(view.el).index();
+				view.model.save({today_order: index},{silent:true});
 			});
 		},
 		newAttributes: function(){
@@ -149,8 +169,7 @@ var app = app || {}, models = models || {};
 				today_order: order,
 				project_order: order
 			});
-			console.log(app.todos);
-			//app.todos.trigger("reset");
+
 			return false;
 		}
 	});
