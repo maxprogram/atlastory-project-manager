@@ -617,7 +617,7 @@ function getEl(id){return document.getElementById(id)}
 		this.update = function(options){
 			$.extend(self.o, options);
 			dragOps = $.extend({},self.o,sortOps);
-			$("li",el).each(function(){
+			$(el).children().each(function(){
 				if (!$(this).data("drag")) $(this).drag(dragOps).css({
 					position: 'relative',
 					top: 0, left: 0
@@ -626,7 +626,7 @@ function getEl(id){return document.getElementById(id)}
 		}
 		
 		function init(){
-			$("li",el).drag(dragOps).css({
+			$(el).children().drag(dragOps).css({
 				position: 'relative',
 				top: 0, left: 0
 			});
