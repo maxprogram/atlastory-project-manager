@@ -4,7 +4,7 @@ class CreateProjects < ActiveRecord::Migration
       t.string :name
       t.string :description
       t.string :status
-      t.boolean :completed
+      t.boolean :completed, default: false
       t.date :due_date
       t.string :links
       t.string :category
@@ -12,7 +12,5 @@ class CreateProjects < ActiveRecord::Migration
 
       t.timestamps
     end
-
-    Project.create({name:"Today",status:"current",completed:false})
   end
 end
