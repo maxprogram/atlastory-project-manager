@@ -11,6 +11,7 @@
 	<li class="dropdown date">
 		<a href="#" class="btn dropdown-toggle" data-toggle="dropdown" title="Due date..."><i class="icon-calendar"></i></a>
 	</li>
+	<% if(list!="projects"){ %>
 	<li class="dropdown">
 		<a href="#" class="btn dropdown-toggle" data-toggle="dropdown" title="Move to..."><i class="icon-arrow-right"></i></a>
 		<ul class="dropdown-menu pull-right" role="menu">
@@ -21,14 +22,25 @@
 		    <% }); %>
 		</ul>
 	</li>
+	<% } %>
 	<li class="dropdown">
 		<a href="#" class="btn dropdown-toggle" data-toggle="dropdown" title="Change status"><i class="icon-time"></i></a>
 		<ul class="dropdown-menu pull-right" role="menu">
+			<% if(list!="projects"){ %>
 		    <li<% if(task.status=="today"){ %> class="active"<% } %>>
 		    	<a href="today" class="status">Today</a></li>
+		    	<li class="divider"></li>
+		    <% } %>
+		    <% if(list=="projects"){ %>
+		    <li<% if(task.status=="current"){ %> class="active"<% } %>>
+		    	<a href="current" class="status">Current</a></li>
+		    	<li class="divider"></li>
+		    <li<% if(task.status=="someday"){ %> class="active"<% } %>>
+		    	<a href="someday" class="status">Someday</a></li>
+		    <% } %>
 		    <li<% if(task.status=="waiting_for"){ %> class="active"<% } %>>
 		    	<a href="waiting_for" class="status">Waiting for</a></li>
-		    <% if(task.project_id!=1){ %>
+		    <% if(task.project_id!=1 && list!="projects"){ %>
 		    <li<% if(task.status=="next"){ %> class="active"<% } %>>
 		    	<a href="next" class="status">Next</a></li>
 		    <% } %>

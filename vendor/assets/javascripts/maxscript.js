@@ -563,11 +563,12 @@ function getEl(id){return document.getElementById(id)}
 		
 		this.o = o;
 		var self = this;
-		var placeholder, lastIndex = 0;
+		var placeholder;
+		this.o.lastIndex = 0;
 		
 		function start(e,ui){
 			var pos	= ui.el.position();
-			lastIndex = ui.el.index();
+			self.o.lastIndex = ui.el.index();
 				
 			ui.el.css({
 				position: 'absolute',
@@ -582,7 +583,7 @@ function getEl(id){return document.getElementById(id)}
 			var pos 	= ui.top,
 				h		= ui.el.outerHeight(),
 				index	= ui.el.index(),
-				step	= Math.round(ui.movedY/h)+lastIndex+1,
+				step	= Math.round(ui.movedY/h)+self.o.lastIndex+1,
 				$items	= $(el).children();
 			
 			if (step > index){
@@ -593,16 +594,16 @@ function getEl(id){return document.getElementById(id)}
 			self.o.onDrag(e,ui);
 		}
 		function stop(e,ui){
-			var index = ui.el.index();
 			placeholder.remove();
+			var index = ui.el.index();
 			ui.el.css({
 				position: 'relative',
 				top: 0, left: 0,
 				zIndex: 20
 			});
-			if (index != lastIndex) {
+			if (index != self.o.lastIndex) {
 				self.o.onStop(e,ui);
-				lastIndex = index;
+				self.o.lastIndex = index;
 			}
 		}
 		

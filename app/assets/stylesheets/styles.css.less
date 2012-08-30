@@ -182,7 +182,6 @@ a:hover {
   li a:hover {
     text-decoration: none;
     background-color: @grayLighter;
-    .box-shadow(0 1px 4px rgba(0,0,0,0.4));
   }
   li.active a {
     background-color: @linkColor;
@@ -232,15 +231,14 @@ a:hover {
   ul {
     margin-left: 0;
     list-style: none;
-    //position: relative;
   }
+  ul.list-items {.box-shadow(@list-shadow)}
   li.task {
     width: 100%;
     height: @taskHeight;
     background-color: @taskBg;
     border-top: 1px solid @white;
     border-bottom: 1px solid @grayLight;
-    &:last-child{.box-shadow(@list-shadow)}
     &:hover .tools {visibility: visible}
   }
   .check {
@@ -329,9 +327,10 @@ a:hover {
   }
   li.done {
     background-color: transparent;
-    border-top: 1px solid fade(@white, 15%);
+    border-top: 1px solid fade(@white, 60%);
     border-bottom: 1px solid fade(@grayLight, 40%);
     .box-shadow(none);
+    &.dragging {background-color: @grayLighter;}
     .check span {
       background-color: @grayLighter;
       .box-shadow(none);
@@ -345,6 +344,9 @@ a:hover {
   }
   li.waiting-for {
     background-color: lighten(@purple,30%);
+  }
+  li.someday {
+    background-color: lighten(@green,30%);
   }
 }
 

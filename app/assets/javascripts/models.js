@@ -55,10 +55,10 @@ var app = app || {}, models = models || {};
 			return parseFloat(t.get("today_order"));
 		},
 		initialize: function(){
-			this.on("all", this.sortthis, this);
+			this.on("all", this.render, this);
 			this.fetch();
 		},
-		sortthis: function(){
+		render: function(){
 			this.sort({silent:true});
 		}
 	});
@@ -74,7 +74,9 @@ var app = app || {}, models = models || {};
 			this.on("all", this.render, this);
 			this.fetch();
 		},
-		render: function(){},
+		render: function(){
+			this.sort({silent:true});
+		},
 		getProject: function(id){
 			return this.find(function(project){
 				return project.get("id")==id
