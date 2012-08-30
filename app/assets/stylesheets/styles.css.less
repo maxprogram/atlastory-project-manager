@@ -240,7 +240,7 @@ a:hover {
     background-color: @taskBg;
     border-top: 1px solid @white;
     border-bottom: 1px solid @grayLight;
-    .box-shadow(@list-shadow);
+    &:last-child{.box-shadow(@list-shadow)}
     &:hover .tools {visibility: visible}
   }
   .check {
@@ -302,18 +302,22 @@ a:hover {
     color: @grayLight;
     text-shadow: 1px 1px 1px @white;
   }
-  .tools {
-    float: right;
+  ul.tools {
+    position: absolute;
+    right: 0px;
     visibility: hidden;
-    width: 300px;
+    width: 250px;
     line-height: @taskHeight;
+    list-style: none;
     li.dropdown {
       float: right;
       padding: 7px 3px;
+      margin: 0px;
     }
   }
   li.new {
     margin-bottom: 4px;
+    .box-shadow(@list-shadow);
     input {
       display: block;
       line-height: @taskHeight;

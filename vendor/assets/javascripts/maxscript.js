@@ -593,15 +593,16 @@ function getEl(id){return document.getElementById(id)}
 			self.o.onDrag(e,ui);
 		}
 		function stop(e,ui){
+			var index = ui.el.index();
 			placeholder.remove();
 			ui.el.css({
 				position: 'relative',
 				top: 0, left: 0,
-				zIndex: 10
+				zIndex: 20
 			});
-			if (ui.el.index() != lastIndex) {
+			if (index != lastIndex) {
 				self.o.onStop(e,ui);
-				lastIndex = ui.el.index();
+				lastIndex = index;
 			}
 		}
 		

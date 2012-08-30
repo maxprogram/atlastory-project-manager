@@ -56,7 +56,7 @@ var app = app || {}, models = models || {};
 			
 			$listItems.sortable({
 				constraint: 'y',
-				//xbounds: [0,1000],
+				xbounds: [0,5000],
 				ybounds: [0,5000],
 				placeholderClass: 'task done'
 			});
