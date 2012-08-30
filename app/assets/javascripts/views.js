@@ -34,6 +34,7 @@ var app = app || {}, models = models || {};
 		},
 		initialize: function(){
 			this.todos = models.today;
+			this.project_id = 1; // "Today" id = 1
 			this.resize();
 		},
 		resize: function(){
@@ -67,13 +68,14 @@ var app = app || {}, models = models || {};
 		},
 		newAttributes: function(){
 			return {
-				name: $newInput.val()
+				name: $newInput.val(),
+				project_id: app.project_id
 			}
 		},
 		add: function(e){
 			if (e.which!==13 || !$newInput.val().trim()) return;
 			
-			app.todos.add(this.newAttributes());
+			app.todos.create(this.newAttributes());
 			$newInput.val("");
 		}
 	});
@@ -94,10 +96,17 @@ var app = app || {}, models = models || {};
 			this.model.on("destroy", this.unrender, this);
 		},
 		render: function(){
+			var id = this.model.get("project_id"),
+				projects = models.projects,
+				project = projects.getProject(id),
+				projectName = (project.get("name")=="Today") ? "":project.get("name");
+
 			this.$el.html(this.template({
 				task: this.model.toJSON(),
-
+				projectName: projectName,
+				projects: projects.toJSON()
 			}));
+
 			this.$el.toggleClass("done",this.model.get("completed"));	
 			this.input = this.$(".edit");
 			return this;

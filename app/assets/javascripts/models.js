@@ -19,7 +19,7 @@ var app = app || {}, models = models || {};
 		defaults: {
 			name: "",
 			description: "",
-			project: "today",
+			project_id: 1,
 			status: "today",
 			category: "personal",
 			due_date: "",
@@ -31,22 +31,57 @@ var app = app || {}, models = models || {};
 			this.save({completed: !this.get("completed")});
 		}
 	});
+
+	var Project = Backbone.Model.extend({
+		defaults: {
+			name: "",
+			description: "",
+			status: "current",
+			category: "personal",
+			due_date: "",
+			links: "",
+			completed: false,
+			order: 100
+		},
+		toggle: function(){
+			this.save({completed: !this.get("completed")});
+		}
+	});
 	
 	// Collection for all lists
 	var List = Backbone.Collection.extend({
 		model: Task,
 		comparator: function(t){
-			return parseFloat(t.get("today_level"));
+			return parseFloat(t.get("today_order"));
 		},
 		initialize: function(){
 			this.on("all", this.render, this);
-			//this.fetch();
+			this.fetch();
 		},
 		render: function(){}
 	});
 
-	// Collection for today list
-	var TodayList = List.extend({ url: "/tasks/today" });
+	// Collection for list of projects
+	var ProjectsList = Backbone.Collection.extend({
+		model: Project,
+		url: "/projects",
+		comparator: function(t){
+			return parseFloat(t.get("order"));
+		},
+		initialize: function(){
+			this.on("all", this.render, this);
+			this.fetch();
+		},
+		render: function(){},
+		getProject: function(id){
+			return this.find(function(project){
+				return project.get("id")==id
+			});
+		}
+	});
+
+	// Rails collections
+	var TodayList = List.extend({ url: "/today" });
 	
 	// Collection for project lists
 	models.ProjectList = List.extend({
@@ -59,7 +94,8 @@ var app = app || {}, models = models || {};
 		}
 	});
 
-	models.today = new List();
+	models.today = new TodayList();
+	models.projects = new ProjectsList();
 	
 	
 })(jQuery);

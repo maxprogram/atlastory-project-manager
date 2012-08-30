@@ -1,11 +1,12 @@
 RailsFramework::Application.routes.draw do
 
-  resources :tasks
-
   root to: 'home#index'
 
   match '/about', to: 'home#about'
 
+  resources :tasks
+  resources :today
+  resources :projects
   #match '/tasks/:id', to: 'tasks#project'
 
   
