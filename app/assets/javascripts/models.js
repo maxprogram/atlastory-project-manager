@@ -36,7 +36,7 @@ var app = app || {}, models = models || {};
 			var done = this.get("completed"),
 				status = this.get("status");
 			// If it's a project task, toggle archive also
-			if (this.get("project_id")!=1 && status!="today")
+			if (this.get("project_id")!=1)
 				status = (done) ? "next" : "archive";
 			this.save({
 				completed: !done,

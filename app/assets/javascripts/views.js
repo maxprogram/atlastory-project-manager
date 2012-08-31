@@ -81,6 +81,9 @@ var app = app || {}, models = models || {};
 			app.todos.each(function(task,i){
 				var taskView = new TaskView({model: task}),
 					status = task.get("status");
+				// If it's not in the current project don't render it
+				if (task.get("project_id")!=app.project_id && status!="today") return;
+				// Puts task in correct list
 				if (status=="waiting_for")
 					$listOther.append(taskView.render().el);
 				else if (status=="archive")
