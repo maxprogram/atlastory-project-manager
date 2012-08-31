@@ -1,7 +1,3 @@
-/*_.templateSettings = {
-    interpolate: /\{\{(.+?)\}\}/g,
-    evaluate: /\{%(.+?)%\}/g	
-};*/
 
 var app = app || {}, models = models || {};
 
@@ -25,12 +21,16 @@ var app = app || {}, models = models || {};
 		$projects	= $(".side-projects"),
 		$list 		= $(".list"),
 		$listItems	= $(".list .list-items"),
+		$listOther	= $(".list .list-other"),
+		$listDone	= $(".list .list-done"),
 		$newInput	= $("#new-task"),
 		$taskTemp	= $("#task-template"),
 		$currProj	= $("#current-project");
 		
 	
 	// App view
+	/////////////////////
+	
 	var App = Backbone.View.extend({
 		el: $(window),
 		events: {
@@ -50,6 +50,8 @@ var app = app || {}, models = models || {};
 	});
 
 	// Task list view
+	/////////////////////
+	
 	var TaskList = Backbone.View.extend({
 		el: $list,
 		events: {
@@ -73,17 +75,27 @@ var app = app || {}, models = models || {};
 			var self = this;
 			this.views = [];
 			$listItems.empty();
+			$listOther.empty();
+			$listDone.empty();
 			
-			_(app.todos.models).each(function(task,i){
-				var taskView = new TaskView({model: task});
-				$listItems.append(taskView.render().el);
-				$listItems.sortableUpdate({
-					onStop: function(){task.trigger("change:order");}
-				});
-				self.views.push(taskView);
+			app.todos.each(function(task,i){
+				var taskView = new TaskView({model: task}),
+					status = task.get("status");
+				if (status=="waiting_for")
+					$listOther.append(taskView.render().el);
+				else if (status=="archive")
+					$listDone.append(taskView.render().el);
+				else {
+					$listItems.append(taskView.render().el);
+					$listItems.sortableUpdate({ // Triggers order change when sorting is done
+						onStop: function(){task.trigger("change:order");}
+					});
+					self.views.push(taskView);
+				}
 			});
 		},
 		orderChange: function(){
+			// Updates the order attributes based on DOM index
 			if (app.project_id==1) var today=true;
 			_(this.views).each(function(view,i){
 				var index = $(view.el).index();
@@ -106,6 +118,8 @@ var app = app || {}, models = models || {};
 	});
 
 	// Task view
+	/////////////////////
+	
 	var TaskView = Backbone.View.extend({
 		tagName: "li",
 		className: "task",
@@ -123,24 +137,25 @@ var app = app || {}, models = models || {};
 		initialize: function(){
 			this.model.on("change", this.render, this);
 			this.model.on("destroy", this.unrender, this);
+			// Project fetch can delay sometimes so this renders it when finished
 			models.projects.on("reset change:name", this.render, this)
 		},
 		render: function(){
 			var self = this,
 				id = this.model.get("project_id"),
 				projects = models.projects,
-				project = projects.getName(id);
+				projectName = projects.getName(id);
 			
 			this.$el.html(this.template({
 				task: this.model.toJSON(),
-				project: project,
+				project: projectName,
 				list: "today",
 				projects: projects.toJSON()
 			}));
 
 			this.$el.toggleClass("done",this.model.get("completed"));
-			if (this.model.get("status")=="waiting_for")
-				this.$el.addClass("waiting-for");
+			this.$el.addClass(this.model.get("status"));
+			if (id==1) this.$el.addClass("today");
 			this.input = this.$(".edit");
 			return this;
 		},
@@ -152,11 +167,12 @@ var app = app || {}, models = models || {};
 			this.input.show().focus();
 		},
 		focus: function(e){
+			// Stops sortable/drag function when editing name
 			e.stopPropagation();
 		},
 		updateName: function(e){
 			var input = this.input.val();
-			if (e.which!==13 || !input.trim()) return;
+			if (e.which!==13 || !input.trim()) return; // Submits on "Enter"
 			
 			this.$("label").show();
 			this.input.hide();
@@ -176,10 +192,9 @@ var app = app || {}, models = models || {};
 		statusTo: function(e){
 			var status = $(e.target).attr("href"),
 				order = 100;
-			
-			if (app.project_id==1) var today=true;
 			if (status=="today") order = 0;
-			if (today) this.model.save({
+			// Saves new status/order based on list type
+			if (app.project_id==1) this.model.save({
 				status: status, today_order: order });
 			else this.model.save({
 				status: status, project_order: order });
@@ -188,7 +203,9 @@ var app = app || {}, models = models || {};
 		}
 	});
 
-	// Sidebar view
+	// Sidebar list view
+	/////////////////////
+	
 	var Sidebar = Backbone.View.extend({
 		el: $sidebar,
 		events: {
@@ -200,9 +217,9 @@ var app = app || {}, models = models || {};
 		},
 		render: function(){
 			$projects.empty();
-			_(models.projects.models).each(function(project,i){
-				if (project.get("id")==1) return;
-				if (project.get("status")!="current") return;
+			models.projects.each(function(project,i){
+				if (project.get("id")==1) return; // Don't show "Today" list
+				if (project.get("status")!="current") return; // Only show current projects
 				var projectView = new SidebarView({model: project});
 				$projects.append(projectView.render().el);
 			});
@@ -212,7 +229,7 @@ var app = app || {}, models = models || {};
 			this.$("#todayList").addClass("active");
 			$newInput.attr("placeholder","Add new task...");
 			$currProj.html("Today");
-
+			// Switches list model + creates new view
 			app.todos.off();
 			app.todos = models.today;
 			app.list = new TaskList();
@@ -223,8 +240,7 @@ var app = app || {}, models = models || {};
 			$("li",$sidebar).removeClass("active");
 			this.$("#projectList").addClass("active");
 			$newInput.attr("placeholder","Add new project...");
-			$currProj.html("Projects");
-
+			// Switches list model + creates new view
 			app.todos.off();
 			app.todos = models.projects;
 			app.list = new ProjectList();
@@ -232,7 +248,9 @@ var app = app || {}, models = models || {};
 		}
 	});
 	
-	// Sidebar project
+	// Sidebar view
+	/////////////////////
+	
 	var SidebarView = Backbone.View.extend({
 		tagName: "li",
 		className: "sub",
@@ -254,11 +272,13 @@ var app = app || {}, models = models || {};
 			$("li",$sidebar).removeClass("active");
 			this.$el.addClass("active");
 			$newInput.attr("placeholder","Add new task...");
-
+			
+			// Switches list model + creates new view
 			var project = parseInt($(e.target).attr("data"));
 			app.todos.off();
 			app.todos = models.project;
 			app.list = new TaskList();
+			// Fetches specific project tasks from server
 			app.todos.fetch({ data: {project_id: project} });
 			
 			app.project_id = project;
@@ -270,6 +290,8 @@ var app = app || {}, models = models || {};
 	});
 
 	// Project list view
+	/////////////////////
+	
 	var ProjectList = Backbone.View.extend({
 		el: $list,
 		events: {
@@ -293,15 +315,24 @@ var app = app || {}, models = models || {};
 			var self = this;
 			this.views = [];
 			$listItems.empty();
+			$listOther.empty();
+			$listDone.empty();
 			
 			_(app.todos.models).each(function(project,i){
 				if (project.get("id")==1) return;
-				var projectView = new ProjectView({model: project});
-				$listItems.append(projectView.render().el);
-				$listItems.sortableUpdate({
-					onStop: function(){project.trigger("change:order");}
-				});
-				self.views.push(projectView);
+				var projectView = new ProjectView({model: project}),
+					status = project.get("status");
+				if (status=="waiting_for" || status=="someday")
+					$listOther.append(projectView.render().el);
+				else if (status=="archive")
+					$listDone.append(projectView.render().el);
+				else {
+					$listItems.append(projectView.render().el);
+					$listItems.sortableUpdate({
+						onStop: function(){project.trigger("change:order");}
+					});
+					self.views.push(projectView);
+				}
 			});
 		},
 		orderChange: function(){
@@ -324,6 +355,8 @@ var app = app || {}, models = models || {};
 	});
 
 	// Project view
+	/////////////////////
+	
 	var ProjectView = Backbone.View.extend({
 		tagName: "li",
 		className: "task",
@@ -331,6 +364,7 @@ var app = app || {}, models = models || {};
 		events: {
 			"click .check"	: "done",
 			"keypress .edit": "updateName",
+			"click .edit"	: "focus",
 			"mousedown .edit": "focus",
 			"dblclick .name": "edit",
 			"click .delete"	: "remove",
@@ -344,7 +378,6 @@ var app = app || {}, models = models || {};
 		render: function(){
 			var self = this,
 				id = this.model.get("project_id"),
-				//tasks = models.projects,
 				project = "";
 			
 			this.$el.html(this.template({
@@ -354,10 +387,7 @@ var app = app || {}, models = models || {};
 			}));
 
 			this.$el.toggleClass("done",this.model.get("completed"));
-			if (this.model.get("status")=="waiting_for")
-				this.$el.addClass("waiting-for");
-			if (this.model.get("status")=="someday")
-				this.$el.addClass("someday");
+			this.$el.addClass(this.model.get("status"));
 			this.input = this.$(".edit");
 			return this;
 		},
@@ -368,8 +398,8 @@ var app = app || {}, models = models || {};
 			this.$("label").hide();
 			this.input.show().focus();
 		},
-		focus: function(){
-			this.input.focus();
+		focus: function(e){
+			e.stopPropagation();
 		},
 		updateName: function(e){
 			var input = this.input.val();

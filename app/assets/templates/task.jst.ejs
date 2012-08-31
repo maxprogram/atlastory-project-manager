@@ -8,10 +8,12 @@
 	<li class="dropdown delete">
 		<a href="#" class="btn" title="Delete"><i class="icon-trash"></i></a>
 	</li>
+	<% if(task.status!="archive"){ %>
 	<li class="dropdown date">
 		<a href="#" class="btn dropdown-toggle" data-toggle="dropdown" title="Due date..."><i class="icon-calendar"></i></a>
 	</li>
-	<% if(list!="projects"){ %>
+	<% } %>
+	<% if(list!="projects" && task.status!="archive"){ %>
 	<li class="dropdown">
 		<a href="#" class="btn dropdown-toggle" data-toggle="dropdown" title="Move to..."><i class="icon-arrow-right"></i></a>
 		<ul class="dropdown-menu pull-right" role="menu">
@@ -19,6 +21,7 @@
 		    	<li<% if(task.project_id==proj.id){ %> class="active"<% } %>>
 		    		<a href="<%= proj.id  %>" class="move"><%= proj.name  %></a>
 		    	</li>
+		    	<% if(proj.id==1){ %><li class="divider"></li><% } %>
 		    <% }); %>
 		</ul>
 	</li>

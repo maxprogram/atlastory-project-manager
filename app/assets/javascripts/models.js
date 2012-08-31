@@ -28,11 +28,20 @@ var app = app || {}, models = models || {};
 			today_order: 90
 		},
 		initialize: function(){
+			// Saves task to the currently displayed project
 			if (!this.get("project_id"))
 				this.save("project_id",app.project_id);
 		},
 		toggle: function(){
-			this.save({completed: !this.get("completed")});
+			var done = this.get("completed"),
+				status = this.get("status");
+			// If it's a project task, toggle archive also
+			if (this.get("project_id")!=1 && status!="today")
+				status = (done) ? "next" : "archive";
+			this.save({
+				completed: !done,
+				status: status
+			});
 		}
 	});
 
@@ -48,7 +57,11 @@ var app = app || {}, models = models || {};
 			order: 100
 		},
 		toggle: function(){
-			this.save({completed: !this.get("completed")});
+			var done = this.get("completed");
+			this.save({
+				completed: !done,
+				status: (done) ? "current" : "archive"
+			});
 		}
 	});
 	
@@ -64,6 +77,11 @@ var app = app || {}, models = models || {};
 		},
 		render: function(){
 			this.sort({silent:true});
+		},
+		completed: function(){
+			return this.filter(function(task){
+				return task.get("completed")
+			});
 		}
 	});
 

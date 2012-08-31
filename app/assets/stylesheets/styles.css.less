@@ -229,11 +229,12 @@ a:hover {
 .list {
   position: relative;
   z-index: @zIndexContents + 10;
-  ul {
+  ul.todos {
     margin-left: 0;
+    margin-bottom: 5px;
     list-style: none;
+    .box-shadow(@list-shadow);
   }
-  ul.list-items {.box-shadow(@list-shadow)}
   li.task {
     width: 100%;
     height: @taskHeight;
@@ -253,7 +254,7 @@ a:hover {
       width: 16px; height: 16px;
       margin-top: (@taskHeight - 18) / 2;
       margin-left: (@taskHeight - 18) / 2;
-      background-color: @yellow;
+      background-color: @grayLighter;
       border: 1px solid @grayLight;
       .border-radius(3px);
       .box-shadow(inset 1px 2px 7px rgba(0,0,0,0.25));
@@ -314,9 +315,12 @@ a:hover {
       margin: 0px;
     }
   }
+}
+
+// List item statuses/categories
+
+.list {
   li.new {
-    margin-bottom: 4px;
-    .box-shadow(@list-shadow);
     input {
       display: block;
       line-height: @taskHeight;
@@ -326,6 +330,7 @@ a:hover {
       background-color: transparent;
     }
   }
+  
   li.done {
     background-color: transparent;
     border-top: 1px solid fade(@white, 60%);
@@ -343,11 +348,37 @@ a:hover {
     }
     .category {text-shadow: none}
   }
-  li.waiting-for {
+  
+  li.today {
+    .check span {
+      background-color: @yellow;
+    }
+  }
+  
+  .today.done .check span {
+    background-color: transparent;
+  }
+  
+  li.waiting_for,
+  li.someday {
+    background-color: #a2ccfe;
+    .name, .category {text-shadow: none;}
+    .check span {
+      background-color: transparent;
+      .box-shadow(none);
+    }
+  }
+  
+  li.someday {
     background-color: lighten(@purple,30%);
   }
-  li.someday {
-    background-color: lighten(@green,30%);
+
+  li.current {
+    .name {font-weight: bold;}
+  }
+  
+  ul.list-done {
+    .box-shadow(none);
   }
 }
 
