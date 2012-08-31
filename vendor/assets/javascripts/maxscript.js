@@ -596,10 +596,12 @@ function getEl(id){return document.getElementById(id)}
 		function stop(e,ui){
 			placeholder.remove();
 			var index = ui.el.index();
-			ui.el.css({
-				position: 'relative',
-				top: 0, left: 0,
-				zIndex: 20
+			$(el).children().each(function(){
+				$(this).css({
+					position: 'relative',
+					top: 0, left: 0,
+					zIndex: 100 - $(this).index()
+				})
 			});
 			if (index != self.o.lastIndex) {
 				self.o.onStop(e,ui);

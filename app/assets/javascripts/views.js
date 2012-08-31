@@ -22,10 +22,12 @@ var app = app || {}, models = models || {};
 		$header		= $("#header"),
 		$container	= $(".container"),
 		$sidebar 	= $(".sidebar"),
+		$projects	= $(".side-projects"),
 		$list 		= $(".list"),
 		$listItems	= $(".list .list-items"),
 		$newInput	= $("#new-task"),
-		$taskTemp	= $("#task-template");
+		$taskTemp	= $("#task-template"),
+		$currProj	= $("#current-project");
 		
 	
 	// App view
@@ -109,6 +111,7 @@ var app = app || {}, models = models || {};
 		events: {
 			"click .check"	: "done",
 			"keypress .edit": "updateName",
+			"mousedown .edit"	: "focus",
 			"dblclick .name": "edit",
 			"click .delete"	: "remove",
 			"click .move"	: "moveTo",
@@ -117,6 +120,7 @@ var app = app || {}, models = models || {};
 		initialize: function(){
 			this.model.on("change", this.render, this);
 			this.model.on("destroy", this.unrender, this);
+			models.projects.on("reset change:name", this.render, this)
 		},
 		render: function(){
 			var self = this,
@@ -143,6 +147,9 @@ var app = app || {}, models = models || {};
 		edit: function(){
 			this.$("label").hide();
 			this.input.show().focus();
+		},
+		focus: function(){
+			this.input.focus();
 		},
 		updateName: function(e){
 			var input = this.input.val();
@@ -186,11 +193,22 @@ var app = app || {}, models = models || {};
 			"click #projectList": "openProjects"
 		},
 		initialize: function(){
-
+			models.projects.on("add change reset", this.render, this);
+		},
+		render: function(){
+			$projects.empty();
+			_(models.projects.models).each(function(project,i){
+				if (project.get("id")==1) return;
+				if (project.get("status")!="current") return;
+				var projectView = new SidebarView({model: project});
+				$projects.append(projectView.render().el);
+			});
 		},
 		openToday: function(){
-			this.$("#todayList").addClass("active")
-				.siblings().removeClass("active");
+			$("li",$sidebar).removeClass("active");
+			this.$("#todayList").addClass("active");
+			$newInput.attr("placeholder","Add new task...");
+			$currProj.html("Today");
 
 			app.todos.off();
 			app.todos = models.today;
@@ -198,13 +216,52 @@ var app = app || {}, models = models || {};
 			app.todos.fetch();
 		},
 		openProjects: function(){
-			this.$("#projectList").addClass("active")
-				.siblings().removeClass("active");
+			$("li",$sidebar).removeClass("active");
+			this.$("#projectList").addClass("active");
+			$newInput.attr("placeholder","Add new project...");
+			$currProj.html("Projects");
 
 			app.todos.off();
 			app.todos = models.projects;
 			app.list = new ProjectList();
 			app.todos.fetch();
+		}
+	});
+	
+	// Sidebar project
+	var SidebarView = Backbone.View.extend({
+		tagName: "li",
+		className: "sub",
+		template: JST['project'],
+		events: {
+			"click"	: "change"
+		},
+		initialize: function(){
+			this.model.on("change", this.render, this);
+			this.model.on("destroy", this.unrender, this);
+		},
+		render: function(){
+			var id = this.model.get("id"),
+				name = this.model.get("name");
+			this.$el.html(this.template({name: name, id: id}));
+			return this;
+		},
+		change: function(e){
+			$("li",$sidebar).removeClass("active");
+			this.$el.addClass("active");
+			$newInput.attr("placeholder","Add new task...");
+
+			var project = parseInt($(e.target).attr("data"));
+			app.todos.off();
+			app.todos = models.project;
+			app.list = new TaskList();
+			app.todos.fetch({ data: {project_id: project} });
+			
+			app.project_id = project;
+			$currProj.html(models.projects.getName(project));
+		},
+		unrender: function(){
+			this.$el.remove();
 		}
 	});
 
@@ -270,6 +327,7 @@ var app = app || {}, models = models || {};
 		events: {
 			"click .check"	: "done",
 			"keypress .edit": "updateName",
+			"mousedown .edit": "focus",
 			"dblclick .name": "edit",
 			"click .delete"	: "remove",
 			"click .move"	: "moveTo",
@@ -305,6 +363,9 @@ var app = app || {}, models = models || {};
 		edit: function(){
 			this.$("label").hide();
 			this.input.show().focus();
+		},
+		focus: function(){
+			this.input.focus();
 		},
 		updateName: function(e){
 			var input = this.input.val();

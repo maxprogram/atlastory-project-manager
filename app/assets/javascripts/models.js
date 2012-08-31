@@ -27,6 +27,10 @@ var app = app || {}, models = models || {};
 			project_order: 90,
 			today_order: 90
 		},
+		initialize: function(){
+			if (!this.get("project_id"))
+				this.save("project_id",app.project_id);
+		},
 		toggle: function(){
 			this.save({completed: !this.get("completed")});
 		}
@@ -93,19 +97,19 @@ var app = app || {}, models = models || {};
 	var TodayList = List.extend({ url: "/today" });
 	
 	// Collection for project lists
-	models.ProjectList = List.extend({
-		url: function(){
-			var base = "/tasks";
-			return base;
-		},
+	var ProjectList = List.extend({
+		url: "/tasks",
 		comparator: function(t){
 			return parseFloat(t.get("project_order"));
+		},
+		initialize: function(){
+			this.on("all", this.render, this);
 		}
 	});
 
 	models.projects = new ProjectsList();
 	models.today = new TodayList();
-	
+	models.project = new ProjectList();
 	
 	
 })(jQuery);
