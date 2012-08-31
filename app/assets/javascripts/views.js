@@ -84,9 +84,11 @@ var app = app || {}, models = models || {};
 			});
 		},
 		orderChange: function(){
+			if (app.project_id==1) var today=true;
 			_(this.views).each(function(view,i){
 				var index = $(view.el).index();
-				view.model.save({today_order: index},{silent:true});
+				if (today) view.model.save({today_order: index},{silent:true});
+				else view.model.save({project_order: index},{silent:true})
 			});
 		},
 		newAttributes: function(){
@@ -175,12 +177,12 @@ var app = app || {}, models = models || {};
 			var status = $(e.target).attr("href"),
 				order = 100;
 			
+			if (app.project_id==1) var today=true;
 			if (status=="today") order = 0;
-			this.model.save({
-				status: status,
-				today_order: order,
-				project_order: order
-			});
+			if (today) this.model.save({
+				status: status, today_order: order });
+			else this.model.save({
+				status: status, project_order: order });
 
 			return false;
 		}
