@@ -111,7 +111,8 @@ var app = app || {}, models = models || {};
 		events: {
 			"click .check"	: "done",
 			"keypress .edit": "updateName",
-			"mousedown .edit"	: "focus",
+			"click .edit"	: "focus",
+			"mousedown .edit": "focus",
 			"dblclick .name": "edit",
 			"click .delete"	: "remove",
 			"click .move"	: "moveTo",
@@ -148,8 +149,8 @@ var app = app || {}, models = models || {};
 			this.$("label").hide();
 			this.input.show().focus();
 		},
-		focus: function(){
-			this.input.focus();
+		focus: function(e){
+			e.stopPropagation();
 		},
 		updateName: function(e){
 			var input = this.input.val();
@@ -214,6 +215,7 @@ var app = app || {}, models = models || {};
 			app.todos = models.today;
 			app.list = new TaskList();
 			app.todos.fetch();
+			app.project_id = 1;
 		},
 		openProjects: function(){
 			$("li",$sidebar).removeClass("active");
