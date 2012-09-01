@@ -5,7 +5,7 @@ var app = app || {}, models = models || {};
 	
 	// Load functions
 	$(function(){
-		/*
+		
 		$('textarea.tinymce').tinymce({
 			// Location of TinyMCE script
 			script_url : '/mce/tiny_mce.js',
@@ -38,7 +38,7 @@ var app = app || {}, models = models || {};
 				username : "Some User",
 				staffid : "991234"
 			}
-		});*/
+		});
 
 		
 	});
