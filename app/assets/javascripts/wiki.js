@@ -16,5 +16,5 @@
 //= require underscore
 //= require backbone
 //= require ../templates/project
-//= require_tree ./wiki
 //= require jquery-tinymce
+//= require_tree ./wiki
