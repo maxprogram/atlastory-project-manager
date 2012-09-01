@@ -15,5 +15,5 @@
 //= require maxscript
 //= require underscore
 //= require backbone
-//= require_tree ../templates
-//= require_tree ./lists
+//= require ../templates/project
+//= require_tree ./wiki

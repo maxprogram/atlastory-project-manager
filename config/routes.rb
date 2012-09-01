@@ -3,6 +3,7 @@ RailsFramework::Application.routes.draw do
   root to: 'home#index'
 
   match '/about', to: 'home#about'
+  match '/wiki', to: 'home#wiki'
 
   resources :tasks
   resources :today

@@ -1,0 +1,225 @@
+
+@import "bootstrap/reset.less";
+@import "bootstrap/variables.less";
+@import "bootstrap/mixins.less";
+
+@import "bootstrap/type.less";
+
+@import "bootstrap/sprites.less";
+@import "bootstrap/dropdowns.less";
+@import "bootstrap/buttons.less";
+@import "bootstrap/button-groups.less";
+
+@import "bootstrap/utilities.less";
+
+
+// Colors
+
+@contentBg:       @grayLighter;
+@sidebarBg:       @white;
+@taskBg:      darken(@white,3%);
+
+// Sizes
+
+@headerHeight:    100px;
+@tabHeight:       40px;
+@sidebarWidth:    250px;
+@toolbarHeight:   35px;
+@taskHeight:    45px;
+
+
+// Master z-index
+
+@zIndexHeader:    50;
+@zIndexContents:  0;
+@zIndexSidebar:   100;
+
+
+
+
+// BLANKET FORMATTING
+// **************************
+
+*, html {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: @baseFontFamily;
+  font-size: @baseFontSize;
+  line-height: @baseLineHeight;
+  color: @textColor;
+  background-color: @bodyBackground;
+  overflow: hidden;
+}
+
+a {
+  color: @linkColor;
+  text-decoration: none;
+}
+a:hover {
+  color: @linkColorHover;
+  text-decoration: underline;
+}
+
+
+
+// DIV CONTAINERS
+// **************************
+
+#page {
+  position: relative;
+  width: 100%
+}
+
+#header {
+  width: 100%;
+  height: @headerHeight;
+}
+
+.container {
+  position: relative;
+  width: 100%;
+  background-color: @contentBg;
+}
+
+
+// HEADER
+// **************************
+
+#header .inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  z-index: @zIndexHeader;
+  .box-sizing(border-box);
+  border-bottom: 1px solid @grayLight;
+}
+
+#header .bottom {
+  position: absolute;
+  left: 0; bottom: -1px;
+  width: 100%;
+}
+
+#current-project {
+  width: @sidebarWidth;
+  float: left;
+  line-height: @tabHeight;
+  margin-top: 10px;
+  font-weight: bold;
+  text-align: center;
+}
+
+
+#tabs {
+  @tab-borders: 1px solid @gray;
+  @unactive:    @grayLighter;
+  float: left;
+  height: @tabHeight;
+  ul {
+    margin-left: 0;
+    list-style: none;
+  }
+  li {
+    float: left;
+    display: list-item;
+    a {
+      display: block;
+      float: left;
+      padding: 0 40px;
+      margin-top: 11px;
+      background-color: darken(@unactive,5%);
+      color: @black;
+      font-weight: bold;
+      line-height: @tabHeight - 1;
+      border: @tab-borders;
+      border-bottom-width: 0px;
+      .border-top-radius(5px);
+      &:hover {
+        text-decoration: none;
+        background-color: @unactive;
+        margin-top: 0px;
+        line-height: @tabHeight + 10;
+      }
+    }
+  }
+  li.active a {
+    background-color: @white;
+    &:hover {background-color: @white}
+  }
+  li + li {
+    margin-left: -1px;
+  }
+}
+
+
+// SIDEBAR
+// **************************
+
+.sidebar {
+  position: absolute;
+  top: 0; left: 0;
+  z-index: @zIndexSidebar;
+  width: @sidebarWidth;
+  height: 100%;
+  background-color: @sidebarBg;
+  overflow: hidden;
+  ul {
+    margin-left: 0;
+    list-style: none;
+  }
+  li {
+    display: list-item;
+    a {
+      display: block;
+      color: @black;
+      font-size: 15px;
+      line-height: 2em;
+      padding: 0 10px;
+    }
+  }
+  li a:hover {
+    text-decoration: none;
+    background-color: @grayLighter;
+  }
+  li.active a {
+    background-color: @linkColor;
+    color: @white;
+    i {background-image: url("@{iconWhiteSpritePath}")}
+  }
+  li.sub a {
+    padding-left: 25px;
+  }
+}
+
+
+// CONTENT
+// **************************
+
+.contents {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  z-index: @zIndexContents;
+  background-color: @contentBg;
+  .inner {
+    position: relative;
+    padding-left: @sidebarWidth;
+    width: 100%;
+    .box-sizing(border-box);
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
