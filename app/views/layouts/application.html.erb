@@ -8,6 +8,29 @@
 <body>
 	<div id="page">
 		
+		<div id="header">
+			
+			<div class="inner">
+				Atlastory Project Manager
+				<div class="bottom">
+					<div id="current-project">
+						Today
+					</div>
+					<div id="tabs">
+						<ul>
+							<li <%= "class=active" if controller.action_name=='index' %>>
+								<a href="/">Lists</a></li>
+							<li <%= "class=active" if controller.action_name=='calendar' %>>
+								<a href="#">Calendar</a></li>
+							<li <%= "class=active" if controller.action_name=='wiki' %>>
+								<a href="<%= url_for :action => 'wiki' %>">Project Wiki</a></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+			
+		</div>
+		
 		<%= yield %>
 		
 	</div>
