@@ -23,10 +23,8 @@ end
 
 group :production do
  	gem 'pg', '0.12.2'
- 	#gem 'activerecord-mysql2-adapter'
+ 	gem 'activerecord-mysql2-adapter'
  	gem 'mysql2'
- 	gem 'activerecord-jdbc-adapter'
- 	gem 'activerecord-jdbcmysql-adapter'
 end
 
 
