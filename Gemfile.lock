@@ -145,6 +145,7 @@ GEM
       rack-test (>= 0.5.3)
     xpath (0.1.4)
       nokogiri (~> 1.3)
+    yaml_db (0.2.3)
 
 PLATFORMS
   ruby
@@ -165,3 +166,4 @@ DEPENDENCIES
   therubyracer
   uglifier (>= 1.0.3)
   webrat (= 0.7.1)
+  yaml_db

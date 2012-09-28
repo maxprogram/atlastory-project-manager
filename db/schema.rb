@@ -14,30 +14,30 @@
 ActiveRecord::Schema.define(:version => 20120829204242) do
 
   create_table "projects", :force => true do |t|
-    t.string   "name"
-    t.string   "description"
-    t.string   "status"
-    t.boolean  "completed"
-    t.date     "due_date"
-    t.string   "links"
-    t.string   "category"
-    t.integer  "order"
-    t.datetime "created_at",  :null => false
-    t.datetime "updated_at",  :null => false
+    t.string    "name"
+    t.string    "description"
+    t.string    "status"
+    t.boolean   "completed"
+    t.date      "due_date"
+    t.string    "links"
+    t.string    "category"
+    t.integer   "order"
+    t.timestamp "created_at",  :null => false
+    t.timestamp "updated_at",  :null => false
   end
 
   create_table "tasks", :force => true do |t|
-    t.string   "name"
-    t.string   "description"
-    t.integer  "project_id"
-    t.string   "status"
-    t.string   "category"
-    t.date     "due_date"
-    t.boolean  "completed",     :default => false
-    t.integer  "project_order"
-    t.integer  "today_order"
-    t.datetime "created_at",                       :null => false
-    t.datetime "updated_at",                       :null => false
+    t.string    "name"
+    t.string    "description"
+    t.integer   "project_id"
+    t.string    "status"
+    t.string    "category"
+    t.date      "due_date"
+    t.boolean   "completed",     :default => false
+    t.integer   "project_order"
+    t.integer   "today_order"
+    t.timestamp "created_at",                       :null => false
+    t.timestamp "updated_at",                       :null => false
   end
 
 end
