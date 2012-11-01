@@ -14,10 +14,10 @@
 @import "bootstrap/grid.less";
 @import "bootstrap/layouts.less";
 @import "bootstrap/utilities.less";
-//@import "bootstrap/responsive-utilities.less";
-//@import "bootstrap/responsive-1200px-min.less"; // Large desktops
-//@import "bootstrap/responsive-768px-979px.less"; // Tablets to regular desktops
-//@import "bootstrap/responsive-767px-max.less"; // Phones to portrait tablets
+@import "bootstrap/responsive-utilities.less";
+@import "bootstrap/responsive-1200px-min.less"; // Large desktops
+@import "bootstrap/responsive-768px-979px.less"; // Tablets to regular desktops
+@import "bootstrap/responsive-767px-max.less"; // Phones to portrait tablets
 
 // Colors
 
@@ -56,8 +56,7 @@ body {
   font-size: @baseFontSize;
   line-height: @baseLineHeight;
   color: @textColor;
-  background-color: @bodyBackground;
-  overflow: hidden;
+  background-color: @contentBg;
 }
 
 a {
@@ -74,22 +73,19 @@ a:hover {
 // DIV CONTAINERS
 // **************************
 
-#page {
-  position: relative;
-  width: 100%
+.container-fluid {
+  padding: 0;
 }
 
 #header {
-  width: 100%;
-  height: @headerHeight;
+  background: @white;
+  height: @headerHeight - @tabHeight;
 }
 
-.container {
-  position: relative;
-  width: 100%;
-  background-color: @contentBg;
+#header2 {
+  background: @white;
+  height: @tabHeight;
 }
-
 
 // HEADER
 // **************************
@@ -110,12 +106,10 @@ a:hover {
 }
 
 #current-project {
-  width: @sidebarWidth;
-  float: left;
   line-height: @tabHeight;
-  margin-top: 10px;
   font-weight: bold;
   text-align: center;
+  cursor: pointer;
 }
 
 
@@ -125,7 +119,7 @@ a:hover {
   float: left;
   height: @tabHeight;
   ul {
-    margin-left: 0;
+    margin: 0;
     list-style: none;
   }
   li {
@@ -135,7 +129,7 @@ a:hover {
       display: block;
       float: left;
       padding: 0 40px;
-      margin-top: 11px;
+      margin: 0;
       background-color: darken(@unactive,5%);
       color: @black;
       font-weight: bold;
@@ -143,11 +137,12 @@ a:hover {
       border: @tab-borders;
       border-bottom-width: 0px;
       .border-top-radius(5px);
+      .box-sizing(border-box);
       &:hover {
         text-decoration: none;
         background-color: @unactive;
-        margin-top: 0px;
-        line-height: @tabHeight + 10;
+        margin-top: -10px;
+        line-height: @tabHeight + 9;
       }
     }
   }
@@ -160,16 +155,26 @@ a:hover {
   }
 }
 
+@media (max-width: 767px) {
+  #tabs {
+    width: 100%;
+    li {
+      width: 33.3333%;
+      a {
+        width: 100%;
+        padding: 0 10px;
+        text-align: center;
+      }
+    }
+  }
+}
+
 
 // SIDEBAR
 // **************************
 
 .sidebar {
-  position: absolute;
-  top: 0; left: 0;
   z-index: @zIndexSidebar;
-  width: @sidebarWidth;
-  height: 100%;
   background-color: @sidebarBg;
   overflow: hidden;
   ul {
@@ -200,19 +205,29 @@ a:hover {
   }
 }
 
+@media (max-width: 767px) {
+  .sidebar li a {
+    font-size: 18px;
+  }
+  .off {
+    display: none !important;
+    height: auto;
+  }
+  .contents {
+    height: auto;
+  }
+}
+
 
 // CONTENT
 // **************************
 
 .contents {
-  position: relative;
-  width: 100%;
   height: 100%;
   z-index: @zIndexContents;
   background-color: @contentBg;
   .inner {
     position: relative;
-    padding-left: @sidebarWidth;
     width: 100%;
     .box-sizing(border-box);
   }

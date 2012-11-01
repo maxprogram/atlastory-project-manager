@@ -11,12 +11,16 @@ var app = app || {}, models = models || {};
 		app.sidebar = new Sidebar();
 
 		$('.dropdown-toggle').dropdown();
+		$currProj.click(function(){
+			$sidebar.toggleClass("off");
+		});
 	});
 	
 	// Element shortcuts
-	var $page		= $("#page"),
+	var $page		= $(".container-fluid"),
 		$header		= $("#header"),
-		$container	= $(".container"),
+		$header2	= $("#header2"),
+		$container	= $(".content"),
 		$sidebar 	= $(".sidebar"),
 		$projects	= $(".side-projects"),
 		$list 		= $(".list"),
@@ -43,7 +47,7 @@ var app = app || {}, models = models || {};
 		},
 		resize: function(){
 			var appHeight	= this.$el.height(),
-				headHeight	= $header.height();
+				headHeight	= $header.height() + $header2.height();
 			$page.height(appHeight);
 			$container.height(appHeight - headHeight);
 		}
@@ -231,7 +235,7 @@ var app = app || {}, models = models || {};
 			$("li",$sidebar).removeClass("active");
 			this.$("#todayList").addClass("active");
 			$newInput.attr("placeholder","Add new task...");
-			$currProj.html("Today");
+			$currProj.html("Today").trigger("click");
 			// Switches list model + creates new view
 			app.todos.off();
 			app.todos = models.today;
@@ -243,6 +247,7 @@ var app = app || {}, models = models || {};
 			$("li",$sidebar).removeClass("active");
 			this.$("#projectList").addClass("active");
 			$newInput.attr("placeholder","Add new project...");
+			$currProj.html("Projects").trigger("click");
 			// Switches list model + creates new view
 			app.todos.off();
 			app.todos = models.projects;
@@ -285,7 +290,7 @@ var app = app || {}, models = models || {};
 			app.todos.fetch({ data: {project_id: project} });
 			
 			app.project_id = project;
-			$currProj.html(models.projects.getName(project));
+			$currProj.html(models.projects.getName(project)).trigger("click");
 		},
 		unrender: function(){
 			this.$el.remove();

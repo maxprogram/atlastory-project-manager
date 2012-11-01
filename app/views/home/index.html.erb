@@ -1,33 +1,33 @@
 <% provide(:title, "Todo+") %>
 		
-		<div class="container">
-			
-			<div class="sidebar">
-				<ul>
-					<li id="todayList" class="active"><a href="#today"><i class="icon-star"></i> Today</a></li>
-					<li id="projectList"><a href="#projects"><i class="icon-briefcase"></i> Projects</a></li>
-					<div class="side-projects"></div>
+<div class="row-fluid content">
+	
+	<div class="sidebar span3 off">
+		<ul>
+			<li id="todayList" class="active"><a href="#today"><i class="icon-star"></i> Today</a></li>
+			<li id="projectList"><a href="#projects"><i class="icon-briefcase"></i> Projects</a></li>
+			<div class="side-projects"></div>
+		</ul>
+	</div>
+	
+	<div class="contents span9">
+		<div class="inner">
+			<div class="list">
+				<ul class="todos">
+					<li class="task new">
+						<div class="check"></div>
+						<div class="name">
+							<input id="new-task" placeholder="Add new task..." autofocus>
+						</div>
+						<div class="tools"></div>
+					</li>
 				</ul>
+				<ul class="list-items todos"></ul>
+				<ul class="list-other todos"></ul>
+				<ul class="list-done todos"></ul>
 			</div>
-			
-			<div class="contents">
-				<div class="inner">
-					<div class="list">
-						<ul class="todos">
-							<li class="task new">
-								<div class="check"></div>
-								<div class="name">
-									<input id="new-task" placeholder="Add new task..." autofocus>
-								</div>
-								<div class="tools"></div>
-							</li>
-						</ul>
-						<ul class="list-items todos"></ul>
-						<ul class="list-other todos"></ul>
-						<ul class="list-done todos"></ul>
-					</div>
-				</div>
-				
-			</div>
-			
 		</div>
+		
+	</div>
+	
+</div>
