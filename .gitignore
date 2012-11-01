@@ -17,6 +17,7 @@ gitignore_global
 /db/*.sqlite3
 *.sql
 *.sqlite
+.yml
 
 # Ignore all logfiles and tempfiles.
 ############################
